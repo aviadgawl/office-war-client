@@ -1,19 +1,19 @@
 import './login.css';
 
 export default function Login(props) {
-
-  let player = { name: '', img: '', mana: 2, hp: 6, attack: 1 };
+  let username = '';
+  let image = '';
 
   let onLogin = () => {
-    props.login(player);
+    props.login(username , image);
   }
 
   let onNameChange = (event) => {
-    player.name = event.target.value;
+    username = event.target.value;
   }
 
   let onImgChange = (event) => {
-    player.img = event.target.value;
+    image = event.target.value;
   }
 
   return (

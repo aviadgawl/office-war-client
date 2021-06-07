@@ -41,7 +41,7 @@ export default function MyPlayer(props) {
                                 <li className="list-group-item"><b>Attack:</b> {props.player.attack}</li>
                                 <li className={hpClassName}><b>HP:</b> {props.player.hp}</li>
                             </ul>
-                            {!props.joined && <button className="btn btn-dark" onClick={onJoinGame}>Join Game</button>}
+                            {!props.player.joined && <button className="btn btn-dark" onClick={onJoinGame}>Join Game</button>}
                         </div>
                     </div>
                 </div>

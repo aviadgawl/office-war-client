@@ -7,13 +7,13 @@ import MyPlayer from './components/my-player/my-player';
 import PlayerList from './components/player-list/player-list';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 
-function App() {
+export default function App() {
 
   const [myPlayerState, setMyPlayerState] = React.useState(null);
   const [connection, setConnection] = React.useState(null);
-  const [playerJoined, setPlayerJoined] = React.useState(false);
   const [players, setPlayers] = React.useState([]);
   const [manaTimerCount, setManaTimerCount] = React.useState(0);
+
   const otherPlayers = React.useMemo(() => (players || []).filter(player => player.id !== myPlayerState.id), [players, myPlayerState]);
 
   const myPlayerStateRef = React.useRef();
@@ -59,14 +59,13 @@ function App() {
     return () => clearInterval(manaInterval);
   }, [myPlayerState?.mana, myPlayerState?.id]);
 
-  const onLogin = (myPlayer) => {
+  const onLogin = (username, image) => {
 
     connection.start().then(result => {
       console.log('Connected!')
 
       connection.on('ReceiveConnID', connId => {
-        myPlayer.id = connId;
-        setMyPlayerState(myPlayer);
+        setMyPlayerState({ id: connId, name: username, img: image, mana: 2, hp: 6, attack: 1, joined: false });
       });
 
       connection.on('ConnectionLost', serverPlayers => {
@@ -154,13 +153,14 @@ function App() {
 
     setMyPlayerState(previousPlayerState => {
       const myPlayerUpdated = players.filter(x => x.id === previousPlayerState.id)[0];
+
       if (myPlayerUpdated !== undefined) {
 
-        if (markJoin) setPlayerJoined(true);
+        if (markJoin) myPlayerUpdated.joined = true;
         return myPlayerUpdated;
-      } else {
-        return previousPlayerState;
-      }
+
+      } else return previousPlayerState;
+
     });
 
     setPlayers(players);
@@ -172,7 +172,7 @@ function App() {
         <div className="row justify-content-md-center">
           <div className="col-md-auto">
             {myPlayerState === null && <Login login={onLogin}></Login>}
-            {(myPlayerState !== null && myPlayerState.hp > 0) && <MyPlayer joined={playerJoined} joinGame={onJoinGame} manaTimer={manaTimerCount} player={myPlayerState}></MyPlayer>}
+            {(myPlayerState !== null && myPlayerState.hp > 0) && <MyPlayer joinGame={onJoinGame} manaTimer={manaTimerCount} player={myPlayerState}></MyPlayer>}
           </div>
         </div>
         <div className="row justify-content-md-center">
@@ -189,5 +189,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
