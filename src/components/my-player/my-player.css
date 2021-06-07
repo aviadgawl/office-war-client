@@ -1,0 +1,17 @@
+.my-player-inline-block{
+    display: inline-block;
+}
+
+.my-player-hp-minus{
+    color: lightcoral;
+    font-weight: 800;
+}
+
+.my-player-hp-plus{
+  color: aquamarine;
+  font-weight: 800;
+}
+
+.my-player-img{
+    width: 20rem;
+}
