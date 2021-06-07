@@ -8,15 +8,16 @@ import PlayerList from './components/player-list/player-list';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 
 export default function App() {
-
+  //Aviad: states
   const [myPlayerState, setMyPlayerState] = React.useState(null);
   const [connection, setConnection] = React.useState(null);
   const [players, setPlayers] = React.useState([]);
   const [manaTimerCount, setManaTimerCount] = React.useState(0);
 
+  //Aviad: momos
   const otherPlayers = React.useMemo(() => (players || []).filter(player => player.id !== myPlayerState.id), [players, myPlayerState]);
 
-  const myPlayerStateRef = React.useRef();
+  //Aviad: refs
   const connectionRef = React.useRef();
 
   React.useEffect(() => {
@@ -35,7 +36,6 @@ export default function App() {
   }, []);
 
   React.useEffect(() => {
-    myPlayerStateRef.current = myPlayerState;
     connectionRef.current = connection;
 
     if (myPlayerState !== null && myPlayerState.hp === 0) connection.stop();
